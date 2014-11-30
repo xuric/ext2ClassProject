@@ -1,0 +1,93 @@
+.\" This manpage is Copyright (C) 1992 Drew Eckhardt;
+.\"             and Copyright (C) 1993 Michael Haardt, Ian Jackson.
+.\" and Copyright (C) 2007 Michael Kerrisk <mtk.manpages@gmail.com>
+.\"
+.\" %%%LICENSE_START(VERBATIM)
+.\" Permission is granted to make and distribute verbatim copies of this
+.\" manual provided the copyright notice and this permission notice are
+.\" preserved on all copies.
+.\"
+.\" Permission is granted to copy and distribute modified versions of this
+.\" manual under the conditions for verbatim copying, provided that the
+.\" entire resulting derived work is distributed under the terms of a
+.\" permission notice identical to this one.
+.\"
+.\" Since the Linux kernel and libraries are constantly changing, this
+.\" manual page may be incorrect or out-of-date.  The author(s) assume no
+.\" responsibility for errors or omissions, or for damages resulting from
+.\" the use of the information contained herein.  The author(s) may not
+.\" have taken the same level of care in the production of this manual,
+.\" which is licensed free of charge, as they might when working
+.\" professionally.
+.\"
+.\" Formatted or processed versions of this manual, if unaccompanied by
+.\" the source, must acknowledge the copyright and authors of this work.
+.\" %%%LICENSE_END
+.\"
+.\" Modified Sat Jul 24 13:35:59 1993 by Rik Faith <faith@cs.unc.edu>
+.\" Modified Sun Nov 28 17:19:01 1993 by Rik Faith <faith@cs.unc.edu>
+.\" Modified Sat Jan 13 12:58:08 1996 by Michael Haardt
+.\"   <michael@cantor.informatik.rwth-aachen.de>
+.\" Modified Sun Jul 21 18:59:33 1996 by Andries Brouwer <aeb@cwi.nl>
+.\" 2001-12-13 added remark by Zack Weinberg
+.\" 2007-06-18 mtk:
+.\"    	Added details about seekable files and file offset.
+.\"	Noted that write() may write less than 'count' bytes, and
+.\"	gave some examples of why this might occur.
+.\"	Noted what happens if write() is interrupted by a signal.
+.\"
+.TH MYWRITE 2 2014-04-30 "Linux" "Linux Programmer's Manual"
+.SH NAME
+mywrite \- write to a file descriptor
+.SH SYNOPSIS
+.B #include "ext2.h"
+.sp
+.BI "size_t mywrite(int " fd ", const void *" buf ", size_t " count );
+.SH DESCRIPTION
+.BR mywrite ()
+writes up to
+.I count
+bytes from the buffer pointed
+.I buf
+to the file referred to by the file descriptor
+.IR fd .
+
+The number of bytes written may be less than
+.I count
+if, for example,
+there is insufficient space on the underlying physical medium, 
+or the call was interrupted by a signal
+handler after having written less than
+.I count
+bytes.
+
+
+.SH RETURN VALUE
+On success, the number of bytes written is returned.
+On error, 0 is returned, and perror is invoked to 
+express the problem and the program is terminated.
+
+.SH CONFORMING TO
+http://cs.indstate.edu/CS471/ext2a.pdf
+as much as possible
+
+.SH KNOWN BUGS
+Will not write files of greater than 
+.ft I 268KiB.
+After writing more than one file to a given directory,
+the subsequent files appear to be unlinked.
+
+
+
+.SH SEE ALSO
+.BR myopen (n),
+.BR myread (n),
+.BR myclose (n)
+.SH COLOPHON
+This page is part of NO release of the Linux
+.I man-pages
+project.
+A description of the project,
+and information about reporting bugs,
+can be found at
+\%http://www.kernel.org/doc/man\-pages/.

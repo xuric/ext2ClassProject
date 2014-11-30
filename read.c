@@ -1,0 +1,32 @@
+#include <stdio.h>
+#include "ext2.h"
+#define K  1024
+
+int main(int argc, char *argv[]) {
+   int fd;
+   char buf[K];
+   size_t n;
+
+   if (argc < 3) {
+       fprintf(stderr,"usage: %s diskimage file\n",argv[0]);
+       return 1;
+   }
+
+   if (setdiskimage(argv[1]) <= 0) { 
+       sprintf(buf,"setdiskimage cannot open '%s' for read/write",argv[1]);
+        perror(buf);
+        return 1;
+   }
+   fd = myopen(argv[2], 0);
+   if (fd == 0) {
+       fprintf(stderr,"cannot myopen %s\n",argv[2]);
+       perror("myopen");
+       return 1;
+   }
+   while ((n = myread(fd,buf,K)) > 0) {
+       write(1,buf,n);
+   }
+   myclose(fd);
+
+   return 0;
+}

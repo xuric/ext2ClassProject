@@ -1,0 +1,122 @@
+#ifndef __ext2_h
+#define __ext2_h
+#define K          1024
+#define INODESIZE   128
+
+typedef unsigned int uint;
+typedef unsigned short ushort;
+typedef unsigned char uchar;
+
+
+typedef struct _sb {
+  uint   s_inodes_count;
+  uint   s_blocks_count;
+  uint   s_r_blocks_count;
+  uint   s_free_blocks_count;
+  uint   s_free_inodes_count;
+  uint   s_first_data_block;
+  uint   s_log_block_size;
+  uint   s_log_frag_size;
+  uint   s_blocks_per_group;
+  uint   s_frags_per_group;
+  uint   s_inodes_per_group;
+  uint   s_mtime;
+  uint   s_wtime;
+  ushort   s_mnt_count;
+  ushort   s_max_mnt_count;
+  ushort   s_magic;
+  ushort   s_state;
+  ushort   s_errors;
+  ushort   s_minor_rev_level;
+  uint   s_lastcheck;
+  uint   s_checkinterval;
+  uint   s_creator_os;
+  uint   s_rev_level;
+  ushort   s_def_resuid;
+  ushort   s_def_resgid;
+} BLOCK1;
+
+typedef struct _sb2 {
+    uint   s_first_ino;
+    ushort   s_inode_size;
+    ushort   s_block_group_nr;
+    uint   s_feature_compat;
+    uint   s_feature_incompat;
+    uint   s_feature_ro_compat;
+    uchar  s_uuid[16];
+    char  s_volume_name[16];
+    uchar  s_last_mounted[64];
+    uint   s_algo_bitmap;
+} BLOCK2;
+
+typedef struct _bgdt {
+    uint  bg_block_bitmap;
+    uint  bg_inode_bitmap;
+    uint  bg_inode_table;
+    ushort  bg_free_blocks_count;
+    ushort  bg_free_inodes_count;
+    ushort  bg_used_dirs_count;
+    ushort bg_pad; 
+    uchar bg_reserved[12];
+} BGDT;
+
+typedef struct _inode_table {
+    ushort   i_mode;
+    ushort   i_uid;
+    uint   i_size;
+    uint   i_atime;
+    uint   i_ctime;
+    uint   i_mtime;
+    uint   i_dtime;
+    ushort   i_gid;
+    ushort   i_links_count;
+    uint   i_blocks;
+    uint   i_flags;
+    uint   i_osd1;
+    uint  i_block[15];
+    uint   i_generation;
+    uint   i_file_acl;
+    uint   i_dir_acl;
+    uint   i_faddr;
+    uchar  i_osushort[12];
+} INODET;
+
+typedef struct _inode {
+	ushort   i_mode;
+	ushort   i_uid;
+	uint   i_size;
+	uint   i_atime;
+	uint   i_ctime;
+	uint   i_mtime;
+	uint   i_dtime;
+	ushort   i_gid;
+	ushort   i_links_count;
+	uint   i_blocks;
+	uint   i_flags;
+	uint   i_osd1;
+	uint   i_block[15];
+	uint   i_generation;
+	uint   i_file_acl;
+	uint   i_dir_acl;
+	uint   i_faddr;
+	uchar  i_osd2[12];
+} INODE;
+
+typedef struct _dir {
+ uint     inode;
+ ushort   rec_len;
+ uchar    name_len;
+ uchar    file_type;
+ char     *name;
+} DIR;
+
+typedef struct _dir_struct {
+ DIR *d;
+ INODE *ino;
+ struct _dir_struct *next;
+ int mode;
+ uint active_block;
+ uint offset;
+} DIR_STRUCT;
+
+#endif

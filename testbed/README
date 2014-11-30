@@ -1,0 +1,23 @@
+Brandon Donham
+CS571
+
+Ext2 library: libext2.a
+
+compiled from ext2.c, utilizing ext2.h
+
+user functions:
+  int setdiskimage(char *path);
+  int myopen(char *path, int flags);
+  size_t myread(int fd, void *buffer, size_t len);
+  size_t mywrite(int fd, void *buffer, size_t len);
+  int myclose(int fd);
+
+
+KNOWN BUGS:
+  cannot handle files larger than 67MB.
+   (triple indirection not supported)
+  has trouble reading files > 12K
+   (not sure why, exactly)
+  writing more than one file to a given directory fails to connect
+   the new file to the existing structure
+
